@@ -1,11 +1,7 @@
 import React from 'react'
 import reactDOM from 'react-dom'
 
-const App = () => (
-  <div className='app'>
-    <h1>APP</h1>
-  </div>
-)
+import App from './App'
 
 reactDOM.render(
   <App />,
