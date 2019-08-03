@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react'
 
-import { MdFavoriteBorder } from 'react-icons/md'
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 
 import { Article, Button, Img, ImgWrapper } from './styles'
 
@@ -13,6 +13,15 @@ export const PhotoCard = ({
 }) => {
   const element = useRef(null)
   const [show, setShow] = useState(false)
+  const key = `like-${id}`
+  const [liked, setLiked] = useState(() => {
+    try {
+      const like = window.localStorage.getItem(key)
+      return like
+    } catch (e) {
+      return false
+    }
+  })
 
   useEffect(function () {
     Promise.resolve(
@@ -33,6 +42,19 @@ export const PhotoCard = ({
       })
   }, [element])
 
+  const Icon = liked
+    ? MdFavorite
+    : MdFavoriteBorder
+
+  const setLocalStorage = value => {
+    try {
+      window.localStorage.setItem(key, value)
+      setLiked(value)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <Article ref={element}>
       {
@@ -44,8 +66,8 @@ export const PhotoCard = ({
               </ImgWrapper>
             </a>
 
-            <Button>
-              <MdFavoriteBorder size='24px' /> {likes} likes!
+            <Button onClick={() => setLocalStorage(!liked)}>
+              <Icon size='24px' /> {likes} likes!
             </Button>
           </Fragment>
         )
