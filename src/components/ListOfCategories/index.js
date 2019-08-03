@@ -3,19 +3,28 @@ import React, { Fragment, useEffect, useState } from 'react'
 
 // @components
 import { Category } from '../Category'
-import { Item, List } from './styles'
+import { Item, List, Spinner } from './styles'
 
-export const ListOfCategories = () => {
+function useCategoryData () {
   const [categories, setCategories] = useState([])
-  const [showFixed, setShowFixed] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(function () {
+    setLoading(true)
     window.fetch('https://petgram-server.midudev.now.sh/categories')
       .then(res => res.json())
       .then(res => {
         setCategories(res)
+        setLoading(false)
       })
   }, [])
+
+  return { categories, loading }
+}
+
+export const ListOfCategories = () => {
+  const { categories, loading } = useCategoryData()
+  const [showFixed, setShowFixed] = useState(false)
 
   useEffect(function () {
     const onScroll = e => {
@@ -31,12 +40,14 @@ export const ListOfCategories = () => {
   }, [showFixed])
 
   const renderList = (fixed) => (
-    <List className={fixed ? 'fixed' : ''}>
+    <List fixed={fixed}>
       {
-        categories.map(
-          category =>
-            <Item key={`category-item-${category.id}`}><Category {...category} /></Item>
-        )
+        loading
+          ? <Spinner />
+          : categories.map(
+            category =>
+              <Item key={`category-item-${category.id}`}><Category {...category} /></Item>
+          )
       }
     </List>
   )
