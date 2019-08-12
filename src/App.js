@@ -1,11 +1,11 @@
 // @vendors
-import React, { Fragment } from 'react'
+import React from 'react'
+import { Router } from '@reach/router'
 
 // @components
-import { ListOfCategories } from './components/ListOfCategories'
-import { ListOfPhotoCards } from './container/ListOfPhotoCards'
 import { PhotoCardDetail } from './container/PhotoCardDetail'
 import { Logo } from './components/Logo'
+import { Home } from './pages/Home'
 import { GlobalStyle } from './styles/GlobalStyles'
 
 const App = () => {
@@ -19,10 +19,10 @@ const App = () => {
       {
         detailId
           ? <PhotoCardDetail id={detailId} />
-          : <Fragment>
-            <ListOfCategories />
-            <ListOfPhotoCards categoryId={2} />
-          </Fragment>
+          : <Router>
+            <Home path='/' />
+            <Home path='/pet/:categoryId' />
+          </Router>
       }
     </div>
   )

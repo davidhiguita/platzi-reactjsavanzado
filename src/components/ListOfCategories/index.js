@@ -46,7 +46,7 @@ export const ListOfCategories = () => {
           ? <Spinner />
           : categories.map(
             category =>
-              <Item key={`category-item-${category.id}`}><Category {...category} /></Item>
+              <Item key={`category-item-${category.id}`}><Category {...category} path={`/pet/${category.id}`} /></Item>
           )
       }
     </List>

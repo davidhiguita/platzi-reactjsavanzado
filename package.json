@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "standard",
-    "dev": "webpack-dev-server",
+    "dev": "webpack-dev-server --history-api-fallback",
     "now-build": "npm run build"
   },
   "repository": {
@@ -34,6 +34,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "@reach/router": "^1.2.1",
     "apollo-boost": "^0.4.4",
     "graphql": "^14.4.2",
     "intersection-observer": "^0.7.0",
