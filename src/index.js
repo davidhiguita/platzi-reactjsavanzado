@@ -3,6 +3,7 @@ import reactDOM from 'react-dom'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
+import UserAuthContext from './context/UserAuthContext'
 import App from './App'
 
 const client = new ApolloClient({
@@ -10,8 +11,10 @@ const client = new ApolloClient({
 })
 
 reactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
+  <UserAuthContext.Provider>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </UserAuthContext.Provider>,
   document.querySelector('#app')
 )

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { Link } from '@reach/router'
 
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { useNearScreen } from '../../hooks/useNearScreen'
@@ -23,11 +24,11 @@ export const PhotoCard = ({
       {
         show && (
           <Fragment>
-            <a href={`/?detail=${id}`}>
+            <Link to={`/detail/${id}`}>
               <ImgWrapper>
                 <Img src={src} />
               </ImgWrapper>
-            </a>
+            </Link>
 
             <ToggleLikeMutation>
               {
