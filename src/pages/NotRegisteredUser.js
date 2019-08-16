@@ -1,17 +1,25 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 
-import Context from '../context/UserAuthContext'
+import UserAuthContext from '../context/UserAuthContext'
 import { UserForm } from '../components/UserForm'
 import { RegisterMutation } from '../container/RegisterMutation'
+import { Tabs, Tab } from './styles'
 
-export const NotRegisteredUser = () => (
-  <Context.Consumer>
-    {
-      ({ activateAuth }) => {
-        return <Fragment>
+export const NotRegisteredUser = () => {
+  const { activateAuth } = useContext(UserAuthContext.Context)
+  const [section, setSection] = useState('register')
+
+  return (
+    <Fragment>
+      <Tabs>
+        <Tab className={section === 'register' ? 'active' : ''} onClick={() => setSection('register')}>Regitro</Tab>
+        <Tab className={section === 'login' ? 'active' : ''} onClick={() => setSection('login')}>Inicio de sesión</Tab>
+      </Tabs>
+      {
+        section === 'register' &&
           <RegisterMutation>
             {
-              (register) => {
+              (register, { data, loading, error }) => {
                 const onSubmit = ({ email, password }) => {
                   const input = { email, password }
                   const variables = { input }
@@ -20,14 +28,18 @@ export const NotRegisteredUser = () => (
                       activateAuth()
                     })
                 }
-                return <UserForm title='Registrarse' onSubmit={onSubmit} />
+
+                const errorMessage = error && 'EL usuario ya existe o hay algún problema'
+                return <UserForm error={errorMessage} disabled={loading} title='Registrarse' onSubmit={onSubmit} />
               }
             }
           </RegisterMutation>
-
-          <UserForm title='Iniciar sesión' onSubmit={activateAuth} />
-        </Fragment>
       }
-    }
-  </Context.Consumer>
-)
+
+      {
+        section === 'login' &&
+          <UserForm title='Iniciar sesión' onSubmit={activateAuth} />
+      }
+    </Fragment>
+  )
+}
