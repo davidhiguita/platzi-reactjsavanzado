@@ -3,6 +3,7 @@ import React, { Fragment, useContext, useState } from 'react'
 import UserAuthContext from '../context/UserAuthContext'
 import { UserForm } from '../components/UserForm'
 import { RegisterMutation } from '../container/RegisterMutation'
+import { LoginMutation } from '../container/LoginMutation'
 import { Tabs, Tab } from './styles'
 
 export const NotRegisteredUser = () => {
@@ -19,7 +20,7 @@ export const NotRegisteredUser = () => {
         section === 'register' &&
           <RegisterMutation>
             {
-              (register, { data, loading, error }) => {
+              (register, { error, loading }) => {
                 const onSubmit = ({ email, password }) => {
                   const input = { email, password }
                   const variables = { input }
@@ -38,7 +39,26 @@ export const NotRegisteredUser = () => {
 
       {
         section === 'login' &&
-          <UserForm title='Iniciar sesión' onSubmit={activateAuth} />
+          <LoginMutation>
+            {
+              (login, { error, loading }) => {
+                const onSubmit = ({ email, password }) => {
+                  const input = { email, password }
+                  const variables = { input }
+                  login({ variables })
+                    .then(() => {
+                      activateAuth()
+                    })
+                }
+
+                const errorMessage = error && 'EL usuario ya existe o hay algún problema'
+
+                return (
+                  <UserForm error={errorMessage} disabled={loading} title='Iniciar sesión' onSubmit={onSubmit} />
+                )
+              }
+            }
+          </LoginMutation>
       }
     </Fragment>
   )
