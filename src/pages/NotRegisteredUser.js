@@ -1,13 +1,13 @@
 import React, { Fragment, useContext, useState } from 'react'
 
-import UserAuthContext from '../context/UserAuthContext'
+import { Context } from '../context/UserAuthContext'
 import { UserForm } from '../components/UserForm'
 import { RegisterMutation } from '../container/RegisterMutation'
 import { LoginMutation } from '../container/LoginMutation'
 import { Tabs, Tab } from './styles'
 
 export const NotRegisteredUser = () => {
-  const { activateAuth } = useContext(UserAuthContext.Context)
+  const { activateAuth } = useContext(Context)
   const [section, setSection] = useState('register')
 
   return (
